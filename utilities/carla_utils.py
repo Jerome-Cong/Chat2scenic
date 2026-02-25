@@ -66,7 +66,7 @@ def get_carla_maps(root_dir=None):
     if root_dir is None:
         root_dir = os.getcwd()
         
-    maps_dir = os.path.join(root_dir, "Scenic", "assets", "maps", "CARLA")
+    maps_dir = os.path.join(root_dir,  "maps")
     
     if not os.path.exists(maps_dir):
         logging.warning(f"Map directory not found: {maps_dir}")

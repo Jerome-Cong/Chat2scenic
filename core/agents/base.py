@@ -7,7 +7,6 @@ from typing import Optional
 import re
 
 from core.config import get_settings
-from core.prompts import load_prompt
 from core.milvus_client import MilvusClient
 from utilities.AgentLogger import get_agent_logger
 

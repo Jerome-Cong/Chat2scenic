@@ -41,7 +41,7 @@ class SearchWorkflow:
     def __init__(self, thread_id: str = "search_thread"):
         self.thread_id = thread_id
         self.interpretor = Interpretor()
-        self.assembler_agent = ComponentAssemblerAgent()
+        # self.assembler_agent = ComponentAssemblerAgent()
         self.generator_agent = ComponentGeneratorAgent() 
         self.header_generator = HeaderGeneratorAgent()
         self.settings_detector = SettingsDetectorAgent()
