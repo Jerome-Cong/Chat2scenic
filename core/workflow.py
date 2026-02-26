@@ -11,6 +11,7 @@ from .agents.component_assembler_agent import ComponentAssemblerAgent
 from .agents.component_generator_agent import ComponentGeneratorAgent
 from .agents.HeaderGenerator import HeaderGeneratorAgent
 from .agents.settings_detector_agent import SettingsDetectorAgent
+from .agents.regulation_query_agent import RegulationQueryAgent
 from .config import get_settings
 from .scenario_milvus_client import ScenarioMilvusClient
 from utilities.parser import parse_json_from_text
@@ -22,6 +23,7 @@ settings = get_settings()
 class SearchWorkflowState(TypedDict):
     messages: Annotated[list, add_messages]
     user_query: str
+    query_type: str  # "REGULATION_QUERY" or "SCENARIO_REQUEST"
     logical_interpretation: str
     user_feedback: str
     confirmation_status: str
@@ -45,6 +47,7 @@ class SearchWorkflow:
         self.generator_agent = ComponentGeneratorAgent() 
         self.header_generator = HeaderGeneratorAgent()
         self.settings_detector = SettingsDetectorAgent()
+        self.regulation_query_agent = RegulationQueryAgent()
         self.generation_threshold = 50
         
         try:
@@ -54,6 +57,8 @@ class SearchWorkflow:
         
         self.workflow = StateGraph(state_schema=SearchWorkflowState)
         
+        self.workflow.add_node("detect_query_type", self._detect_query_type_node)
+        self.workflow.add_node("answer_regulation_query", self._answer_regulation_query_node)
         self.workflow.add_node("interpret_query", self._interpret_query_node)
         self.workflow.add_node("handle_feedback", self._handle_feedback_node)
         self.workflow.add_node("detect_settings", self._detect_settings_node)
@@ -65,11 +70,23 @@ class SearchWorkflow:
             START,
             self._decide_start_point,
             {
+                "detect_type": "detect_query_type",
                 "interpret": "interpret_query",
                 "feedback": "handle_feedback",
                 "search": "detect_settings"
             }
         )
+        
+        self.workflow.add_conditional_edges(
+            "detect_query_type",
+            self._route_by_query_type,
+            {
+                "regulation": "answer_regulation_query",
+                "scenario": "interpret_query"
+            }
+        )
+        
+        self.workflow.add_edge("answer_regulation_query", END)
         
         self.workflow.add_conditional_edges(
             "interpret_query",
@@ -97,12 +114,22 @@ class SearchWorkflow:
         self.memory = MemorySaver()
         self.app = self.workflow.compile(checkpointer=self.memory)
        
-    def _decide_start_point(self, state: SearchWorkflowState) -> Literal["interpret", "feedback", "search"]:
+    def _decide_start_point(self, state: SearchWorkflowState) -> Literal["detect_type", "interpret", "feedback", "search"]:
+        # If user provided feedback, handle it
         if state.get("confirmation_status") == "rejected":
             return "feedback"
-        elif state.get("logical_interpretation"):
+        # If we already have interpretation and confirmed, continue to search
+        elif state.get("logical_interpretation") and state.get("confirmation_status") == "confirmed":
             return "search"
-        return "interpret"
+        # For new queries, first detect if it's a regulation query or scenario request
+        return "detect_type"
+    
+    def _route_by_query_type(self, state: SearchWorkflowState) -> Literal["regulation", "scenario"]:
+        """Route based on detected query type."""
+        query_type = state.get("query_type", "SCENARIO_REQUEST")
+        if query_type == "REGULATION_QUERY":
+            return "regulation"
+        return "scenario"
     
     def _check_confirmation(self, state: SearchWorkflowState) -> Literal["confirmed", "needs_feedback"]:
         return "confirmed" if state.get("confirmation_status") == "confirmed" else "needs_feedback"
@@ -118,6 +145,76 @@ class SearchWorkflow:
         except Exception as e:
             logging.error(f"❌ Failed to retrieve components for {scenario_id}: {e}")
             return {}
+    
+    def _detect_query_type_node(self, state: SearchWorkflowState):
+        """Detect if the user query is about regulations or a scenario request."""
+        agent_logger = get_agent_logger()
+        if agent_logger:
+            agent_logger.log_workflow_event("node_entry", {
+                "node": "detect_query_type",
+                "user_query": state.get("user_query", "")
+            })
+        
+        user_query = state.get("user_query", "")
+        
+        try:
+            query_type = self.regulation_query_agent.detect_query_type(user_query)
+            logging.info(f"🔍 Detected query type: {query_type}")
+        except Exception as e:
+            logging.warning(f"⚠️ Failed to detect query type: {e}, defaulting to SCENARIO_REQUEST")
+            query_type = "SCENARIO_REQUEST"
+        
+        state["query_type"] = query_type
+        
+        if agent_logger:
+            agent_logger.log_workflow_event("node_exit", {
+                "node": "detect_query_type",
+                "query_type": query_type
+            })
+        
+        return state
+    
+    def _answer_regulation_query_node(self, state: SearchWorkflowState):
+        """Answer a regulation-related query using the RAG system."""
+        agent_logger = get_agent_logger()
+        if agent_logger:
+            agent_logger.log_workflow_event("node_entry", {
+                "node": "answer_regulation_query",
+                "user_query": state.get("user_query", "")
+            })
+        
+        user_query = state.get("user_query", "")
+        logging.info(f"📚 Answering regulation query: {user_query[:100]}...")
+        
+        try:
+            result = self.regulation_query_agent.process(user_query)
+            response = result.get("response", "I couldn't find relevant information.")
+            sources = result.get("sources", [])
+            
+            logging.info(f"✅ Found information from sources: {sources}")
+            
+        except Exception as e:
+            logging.error(f"❌ Failed to answer regulation query: {e}")
+            response = f"I encountered an error while searching the regulations database: {str(e)}"
+        
+        # Add helpful follow-up message
+        follow_up = (
+            "\n\n---\n"
+            "💡 **What would you like to do next?**\n"
+            "- Ask another question about regulations\n"
+            "- Request a scenario generation (e.g., \"Create a scenario where ego vehicle follows another vehicle\")"
+        )
+        
+        state["messages"].append(AIMessage(content=response + follow_up))
+        state["workflow_status"] = "completed"
+        
+        if agent_logger:
+            agent_logger.log_workflow_event("node_exit", {
+                "node": "answer_regulation_query",
+                "response_length": len(response)
+            })
+        
+        return state
     
     def _interpret_query_node(self, state: SearchWorkflowState):
         agent_logger = get_agent_logger()
@@ -592,6 +689,7 @@ class SearchWorkflow:
             state = {
                 "messages": [],
                 "user_query": "",
+                "query_type": "",
                 "logical_interpretation": "",
                 "user_feedback": "",
                 "confirmation_status": "",
@@ -636,6 +734,7 @@ class SearchWorkflow:
         elif user_input:
             # Reset generation-related state for a new query
             state["user_query"] = user_input
+            state["query_type"] = ""
             state["logical_interpretation"] = ""
             state["user_feedback"] = ""
             state["confirmation_status"] = ""
@@ -677,3 +776,9 @@ class SearchWorkflow:
                 self.generator_agent.close()
         except Exception as e:
             logging.warning(f"Warning during ComponentGeneratorAgent cleanup: {e}")
+        
+        try:
+            if self.regulation_query_agent:
+                self.regulation_query_agent.close()
+        except Exception as e:
+            logging.warning(f"Warning during RegulationQueryAgent cleanup: {e}")

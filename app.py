@@ -86,7 +86,7 @@ class SearchChatbotApp:
             kwargs = {}
             
             if not self.awaiting_confirmation:
-                logging.info(f"📝 Waiting for user confirmation")
+                logging.info(f"📝 Processing new query...")
                 kwargs["user_input"] = message
                 
             else:
@@ -110,14 +110,20 @@ class SearchChatbotApp:
                 
                 result = future.result()
 
-            if not self.awaiting_confirmation:
+            # Update state based on workflow_status (applies to ALL workflow runs)
+            workflow_status = result.get("workflow_status", "")
+            if workflow_status == "completed":
+                # Workflow finished (regulation query answered OR scenario generated)
+                self.awaiting_confirmation = False
+                self.workflow_completed = True
+            elif workflow_status == "awaiting_confirmation":
+                # Scenario interpretation done, waiting for user confirmation
                 self.awaiting_confirmation = True
+                self.workflow_completed = False
             else:
-                if result.get("workflow_status") == "completed":
-                    self.awaiting_confirmation = False
-                    self.workflow_completed = True
-                elif result.get("workflow_status") == "awaiting_confirmation":
-                    self.awaiting_confirmation = True
+                # Unknown status, reset to safe state
+                self.awaiting_confirmation = False
+                self.workflow_completed = False
             
             if result.get("workflow_status") == "completed" and self.agent_logger:
                 self.agent_logger.write_summary()
@@ -183,11 +189,31 @@ def create_demo():
 
     with gr.Blocks(title="Scenic Scenario Search", theme=gr.themes.Soft(), css=".center-row { align-items: center !important; }")as demo:
         gr.Markdown("## 🚗 Scenic Scenario Generation")
-        gr.Markdown("Send your request, confirm the structure, and generate the code.")
+        gr.Markdown("Ask questions about regulations (R171, R157, R152, benchmarks) or request scenario generation.")
+        
+        # Initial greeting message
+        initial_message = [
+            {
+                "role": "assistant", 
+                "content": (
+                    "👋 **Welcome to Scenic Scenario Generation Assistant!**\n\n"
+                    "I can help you with two things:\n\n"
+                    "**📚 Ask about Regulations**\n"
+                    "- Query UN Regulations (R171, R157, R152)\n"
+                    "- Explore benchmark scenarios (NHTSA, CARLA Leaderboard)\n"
+                    "- Example: *\"What scenarios are available in UN R171?\"*\n\n"
+                    "**🚗 Generate Driving Scenarios**\n"
+                    "- Describe a scenario you want to create\n"
+                    "- I'll generate Scenic code for CARLA simulation\n"
+                    "- Example: *\"Ego vehicle follows another vehicle that suddenly stops\"*\n\n"
+                    "How can I assist you today?"
+                )
+            }
+        ]
         
         with gr.Row():
             with gr.Column(scale=7):
-                chatbot = gr.Chatbot(height=600, label="Conversation", type='messages')
+                chatbot = gr.Chatbot(height=600, label="Conversation", type='messages', value=initial_message)
                 
                 with gr.Row(equal_height=False, elem_classes="center-row"):
                             msg = gr.Textbox(
@@ -200,13 +226,23 @@ def create_demo():
                             submit_btn = gr.Button("Send", variant="primary", scale=1)
                         
                 with gr.Column():
-                    gr.Markdown("### Examples")
-                    example_texts = [
+                    gr.Markdown("### 📚 Ask About Regulations")
+                    regulation_examples = [
+                        "What scenarios are available in UN R171?",
+                        "List benchmark scenarios from NHTSA",
+                        "What does R157 say about lane keeping?"
+                    ]
+                    for text in regulation_examples:
+                        ex_btn = gr.Button(text, size="sm", variant="secondary")
+                        ex_btn.click(fn=lambda t=text: t, inputs=[], outputs=msg)
+                    
+                    gr.Markdown("### 🚗 Generate Scenarios")
+                    scenario_examples = [
                         "Ego vehicle is following an adversary vehicle. Adversary suddenly stops.",
                         "Ego vehicle performs a lane change to bypass a slow adversary.",
                         "Ego vehicle yields to another vehicle at a four-way intersection."
                     ]
-                    for text in example_texts:
+                    for text in scenario_examples:
                         ex_btn = gr.Button(text, size="sm", variant="secondary")
                         ex_btn.click(fn=lambda t=text: t, inputs=[], outputs=msg)
 
