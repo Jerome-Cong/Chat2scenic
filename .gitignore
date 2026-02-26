@@ -17,3 +17,5 @@ data/new-structure/
 Scenario/
 Benchmark*/
 evaluation*/
+
+.vscode/
