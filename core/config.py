@@ -48,9 +48,6 @@ class Settings(BaseSettings):
     LLM_TOP_P: float = 0.9        # Nucleus sampling parameter
     LLM_TOP_K: int = 40           # Top-k sampling parameter
 
-    CARLA_PATH: str = "" 
-    MAP_PATH:str = ""
-    MAP : str = "Town05"
     class Config:
         env_file = "././.env"   
 
