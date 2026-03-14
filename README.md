@@ -1,22 +1,63 @@
-# Chat2Scenic
+<h1 align="center">Chat2Scenic</h1>
 
-This repo contains a RAG-based framework for scenario generation and a chatbot for interactive use. The generation workflow is component-based (interpret → retrieve/generate components → assemble code) and can optionally use Milvus for retrieval.
+<p align="center"><b>Iterative RAG-Based Framework for Automated Driving Scenario Generation</b></p>
+
+<p align="center">
+   <a href="https://anonymous-research-paper.github.io/Chat2Scenic/">🌐 Homepage</a>
+   &nbsp;•&nbsp;
+   <a href="https://huggingface.co/datasets/wentingforever/Chat2Scenic">🤗 Dataset</a>
+</p>
+
+<p align="center">
+   <img alt="Python" src="https://img.shields.io/badge/Python-3.10-blue">
+   <img alt="RAG" src="https://img.shields.io/badge/LangChain-RAG-purple">
+   <img alt="Agent Workflow" src="https://img.shields.io/badge/LangGraph-Agent%20Workflow-orange">
+   <img alt="Vector DB" src="https://img.shields.io/badge/VectorDB-Milvus-green">
+   <img alt="UI" src="https://img.shields.io/badge/UI-Gradio-yellow">
+</p>
+
+Chat2Scenic provides a chatbot UI for interactive scenario refinement, and uses retrieval-augmented generation (RAG) to ground scenario generation in regulatory knowledge and Scenic DSL syntax.
+
+## Database setup (Milvus)
+
+Chat2Scenic uses Milvus for document and scenario embeddings and retrieval.
+
+1. Make sure you have a Milvus standalone container running.
+   - Installation guide: [Milvus Standalone (Docker Compose)](https://milvus.io/docs/v2.3.x/install_standalone-docker-compose.md)
+2. Restore the provided Milvus volume snapshot:
+   - Download [volumes-release.zip](https://github.com/WentingMiao/Chat2Scenic/releases/download/v1.0.0/volumes-release.zip)
+   - Extract it and replace the existing Milvus volume directory.
+   - If you already have Milvus data, back up your current volume first.
+3. Restart the Milvus container.
+
+## Example of the generated scenarios in CARLA simulator
+Description:  "The ego-vehicle is performing an unprotected left turn at an intersection, yielding to oncoming traffic.  " 
+
+<p align="center">
+   <img src="assets/CARLA_Leaderboard__scenario_002__Town10HD_Opt__TPV.gif" alt="TPV" width="32%" />
+   <img src="assets/CARLA_Leaderboard__scenario_002__Town10HD_Opt__FPV.gif" alt="FPV" width="32%" />
+   <img src="assets/CARLA_Leaderboard__scenario_002__Town10HD_Opt__BEV.gif" alt="BEV" width="32%" />
+</p>
+
 
 ## Quickstart
 
 ### 1) Python environment
 
-Requires **Python 3.11 or 3.12**.
-
 ```bash
-python -m venv .venv
-\.venv\Scripts\activate
+conda create --name chat2scenic python=3.10
+conda activate chat2scenic
 pip install -r requirements.txt
 ```
 
 ### 2) Configure `.env`
 
-Copy `env.example` to `.env` and set the environment variables. Other settings can be configured in `core/config.py`.
+Copy `env.example` to `.env` and set the required environment variables.
+
+- Windows (PowerShell): `Copy-Item env.example .env`
+- macOS/Linux: `cp env.example .env`
+
+Other settings can be configured in `core/config.py`.
 
 ### 3) Run the UI
 
@@ -26,29 +67,23 @@ python app.py
 
 Open `http://127.0.0.1:7860`.
 
-How the UI flow works:
-
-1. Send a natural-language request.
-2. The app proposes a **Logical Scenario Structure Representation**.
-3. Reply `yes`/`ok` to confirm (or provide feedback to refine).
-4. The generated Scenic code appears in the right panel.
-
+## Citation
+```bibtex
+@inproceedings{chat2scenic2026,
+   title     = {Chat2Scenic: An Iterative RAG-Based Framework for Automated Driving Scenario Generation},
+   author    = {Anonymous Authors},
+   booktitle = {Submitted to the IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
+   year      = {2026},
+   note      = {Under review}
+}
+```
 
 ## Repo layout (high level)
 
 - `app.py`: Gradio UI entrypoint.
-- `core/`: workflow, agents, prompts, embedding + LLM adapters, Milvus clients.
-- `utilities/`: helper scripts (CARLA helpers, ingestion utilities, parsing, logging).
-- `Benchmark/`: benchmark of scenario descriptions.
+- `core/`: core components of the framework including workflow, agents, prompts, clients.
+- `utils/`: helper scripts
+- `Benchmark/`: benchmark of scenario from different regulations
 - `maps/`: CARLA maps.
 
 
-## Server env
-
-The code is located under `/home/dellpro2/wenting/scenario-generation-chatbot/`.
-
-1. Start the database server: `docker start milvus_wenting`
-2. Activate the virtual environment: `conda activate wenting`
-3. Run the server: `python app.py`
-
-**Reminder**: Do not install any other packages in this environment without discussing with the author in case to break the virtual env. 
