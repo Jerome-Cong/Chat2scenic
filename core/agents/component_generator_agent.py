@@ -31,7 +31,7 @@ class ComponentGeneratorAgent(BaseAgent):
         self.doc_client = None
         
         try:
-            self.scenario_client = ScenarioMilvusClient(collection_name="scenario_components_with_subject")
+            self.scenario_client = ScenarioMilvusClient()
             print("[WARNING] ComponentGeneratorAgent: Initialized ScenarioMilvusClient")
         except Exception as e:
             print(f"[WARNING] ComponentGeneratorAgent: Failed to initialize ScenarioMilvusClient: {e}")

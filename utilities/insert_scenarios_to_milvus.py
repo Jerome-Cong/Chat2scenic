@@ -10,7 +10,7 @@ settings = get_settings()
 
 
 def create_collection():
-    collection_name = "scenario_components_with_subject"
+    collection_name = "scenario_components"
     
     if utility.has_collection(collection_name):
         print(f"Collection '{collection_name}' already exists - will append new chunks.")

@@ -51,7 +51,7 @@ class SearchWorkflow:
         self.generation_threshold = 50
         
         try:
-            self.milvus_client = ScenarioMilvusClient(collection_name="scenario_components_with_subject")
+            self.milvus_client = ScenarioMilvusClient(collection_name="scenario_components")
         except Exception as e:
             self.milvus_client = None
         

@@ -6,7 +6,7 @@ import torch
 class Settings(BaseSettings):
     #  Milvus
     MILVUS_URI: str = "http://localhost:19530"
-    MILVUS_COLLECTION: str = "gemini" 
+    MILVUS_COLLECTION: str = "documentation" 
     MILVUS_TOKEN: str = ""
 
     MISTRAL_OCR_KEY: str = ""
