@@ -1,4 +1,4 @@
-<h2 align="center">Chat2Scenic: Iterative RAG-Based Framework for Automated Driving Scenario Generation</h2>
+<h1 align="center">Chat2Scenic: Iterative RAG-Based Framework for Automated Driving Scenario Generation</h1>
 
 
 <p align="center">
