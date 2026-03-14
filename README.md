@@ -4,7 +4,7 @@
 <p align="center">
    <a href="https://anonymous-research-paper.github.io/Chat2Scenic/">🌐 Homepage</a>
    &nbsp;•&nbsp;
-   <a href="https://huggingface.co/datasets/wentingforever/Chat2Scenic">🤗 Dataset</a>
+   <a href="https://huggingface.co/datasets/chat2scenic/Chat2Scenic">🤗 Dataset</a>
 </p>
 
 <p align="center">
@@ -24,7 +24,7 @@ Chat2Scenic uses Milvus for document and scenario embeddings and retrieval.
 1. Make sure you have a Milvus standalone container running.
    - Installation guide: [Milvus Standalone (Docker Compose)](https://milvus.io/docs/v2.3.x/install_standalone-docker-compose.md)
 2. Restore the provided Milvus volume snapshot:
-   - Download [volumes-release.zip](https://github.com/WentingMiao/Chat2Scenic/releases/download/v1.0.0/volumes-release.zip)
+   - Download [volumes-release.zip](https://huggingface.co/datasets/chat2scenic/Chat2Scenic/resolve/main/volumes-release.zip)
    - Extract it and replace the existing Milvus volume directory.
    - If you already have Milvus data, back up your current volume first.
 3. Restart the Milvus container.
