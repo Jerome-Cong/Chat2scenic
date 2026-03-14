@@ -1,6 +1,5 @@
-<h1 align="center">Chat2Scenic</h1>
+<h2 align="center">Chat2Scenic: Iterative RAG-Based Framework for Automated Driving Scenario Generation</h2>
 
-<p align="center"><b>Iterative RAG-Based Framework for Automated Driving Scenario Generation</b></p>
 
 <p align="center">
    <a href="https://anonymous-research-paper.github.io/Chat2Scenic/">🌐 Homepage</a>
