@@ -2,14 +2,12 @@ import gradio as gr
 import logging
 import time
 import torch
-import sys
 import traceback
 import concurrent.futures
 from core.workflow import SearchWorkflow
 from core.config import get_settings
-from utilities.QueueHandler import QueueHandler
-from utilities.carla_utils import get_carla_blueprints, get_carla_maps
-from utilities.AgentLogger import initialize_agent_logger, reset_agent_logger, get_agent_logger
+from utils.QueueHandler import QueueHandler
+from utils.AgentLogger import initialize_agent_logger, reset_agent_logger, get_agent_logger
 settings = get_settings()
 
 
@@ -182,9 +180,6 @@ class SearchChatbotApp:
 def create_demo():
     app = SearchChatbotApp()
     
-    blueprints = get_carla_blueprints()
-    maps = get_carla_maps()
-    print(f"Loaded {len(blueprints)} blueprints and {len(maps)} maps.")
     
 
     with gr.Blocks(title="Scenic Scenario Search", theme=gr.themes.Soft(), css=".center-row { align-items: center !important; }")as demo:

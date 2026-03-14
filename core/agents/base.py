@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from langchain_core.messages import HumanMessage, AIMessage
+from langchain_core.messages import HumanMessage
 from langchain_core.prompts import ChatPromptTemplate
 from langchain.chat_models import init_chat_model
 from typing import Any, Dict
@@ -8,7 +8,7 @@ import re
 
 from core.config import get_settings
 from core.milvus_client import MilvusClient
-from utilities.AgentLogger import get_agent_logger
+from utils.AgentLogger import get_agent_logger
 
 settings = get_settings()
 

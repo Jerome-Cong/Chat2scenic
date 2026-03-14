@@ -14,8 +14,8 @@ from .agents.settings_detector_agent import SettingsDetectorAgent
 from .agents.regulation_query_agent import RegulationQueryAgent
 from .config import get_settings
 from .scenario_milvus_client import ScenarioMilvusClient
-from utilities.parser import parse_json_from_text
-from utilities.AgentLogger import get_agent_logger
+from utils.parser import parse_json_from_text
+from utils.AgentLogger import get_agent_logger
 
 settings = get_settings()
 

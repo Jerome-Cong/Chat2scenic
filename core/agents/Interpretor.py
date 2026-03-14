@@ -1,7 +1,7 @@
 from langchain_core.messages import HumanMessage
 from .base import BaseAgent
 from core.prompts import load_prompt
-from utilities.AgentLogger import get_agent_logger
+from utils.AgentLogger import get_agent_logger
 
 class Interpretor(BaseAgent):
     def __init__(self):
