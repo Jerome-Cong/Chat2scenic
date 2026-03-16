@@ -17,6 +17,17 @@
 
 Chat2Scenic provides a chatbot UI for interactive scenario refinement, and uses retrieval-augmented generation (RAG) to ground scenario generation in regulatory knowledge and Scenic DSL syntax.
 
+
+## Example of the generated scenarios in CARLA simulator
+Description:  "The ego-vehicle is performing an unprotected left turn at an intersection, yielding to oncoming traffic.  " 
+
+<p align="center">
+   <img src="assets/CARLA_Leaderboard__scenario_002__Town10HD_Opt__TPV.gif" alt="TPV" width="32%" />
+   <img src="assets/CARLA_Leaderboard__scenario_002__Town10HD_Opt__FPV.gif" alt="FPV" width="32%" />
+   <img src="assets/CARLA_Leaderboard__scenario_002__Town10HD_Opt__BEV.gif" alt="BEV" width="32%" />
+</p>
+
+
 ## Database setup (Milvus)
 
 Chat2Scenic uses Milvus for document and scenario embeddings and retrieval.
@@ -28,15 +39,6 @@ Chat2Scenic uses Milvus for document and scenario embeddings and retrieval.
    - Extract it and replace the existing Milvus volume directory.
    - If you already have Milvus data, back up your current volume first.
 3. Restart the Milvus container.
-
-## Example of the generated scenarios in CARLA simulator
-Description:  "The ego-vehicle is performing an unprotected left turn at an intersection, yielding to oncoming traffic.  " 
-
-<p align="center">
-   <img src="assets/CARLA_Leaderboard__scenario_002__Town10HD_Opt__TPV.gif" alt="TPV" width="32%" />
-   <img src="assets/CARLA_Leaderboard__scenario_002__Town10HD_Opt__FPV.gif" alt="FPV" width="32%" />
-   <img src="assets/CARLA_Leaderboard__scenario_002__Town10HD_Opt__BEV.gif" alt="BEV" width="32%" />
-</p>
 
 
 ## Quickstart
