@@ -1,4 +1,4 @@
-<h1 align="center">Chat2Scenic: An Iterative RAG-Based Framework for Automated Driving Scenario Generation</h1>
+<h1 align="center">Chat2Scenic: An Iterative RAG-Based Framework for Scenario Generation in Autonomous Driving</h1>
 
 <p align="center">
    <a href="https://anonymous-research-paper.github.io/Chat2Scenic/">🌐 Homepage</a>
@@ -172,7 +172,7 @@ If you find Chat2Scenic useful, please cite our paper:
 
 ```bibtex
 @inproceedings{chat2scenic2026,
-   title     = {Chat2Scenic: An Iterative RAG-Based Framework for Automated Driving Scenario Generation},
+   title     = {Chat2Scenic: An Iterative RAG-Based Framework for Scenario Generation in Autonomous Driving},
    author    = {Gao, Yuan and Miao, Wenting and Piccinini, Mattia and Wang, Haoyu and Song, Qunying and Betz, Johannes},
    booktitle = {2026 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
    year      = {2026},
