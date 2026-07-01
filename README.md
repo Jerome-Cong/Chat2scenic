@@ -49,17 +49,17 @@ Chat2Scenic decomposes scenario generation into three cooperating modules and re
 
 The interactive chatbot interprets a natural-language request, negotiates the logical scenario structure with the user, and generates the corresponding Scenic DSL script component-by-component, reporting the source of each component and the end-to-end generation time.
 
-<div align="center">
-   <video src="https://github.com/TUM-AVS/Chat2scenic/raw/main/assets/demo_chatbot.mp4" poster="https://github.com/TUM-AVS/Chat2scenic/raw/main/assets/demo_chatbot_poster.png" controls muted loop playsinline width="80%"></video>
-</div>
+<p align="center">
+   <img src="assets/demo_chatbot.gif" alt="Chatbot & Scenic code generation demo" width="80%" />
+</p>
 
 ### Demo 2 — Human Evaluation GUI
 
 To assess **Scenario Alignment**, we built a dedicated annotation tool that presents evaluators with the original benchmark description alongside the CARLA simulation video (BEV, FPV, TPV). Annotators rate five alignment layers — Road Layout (RL), Traffic Infrastructure (TI), Temporal Modifications (TM), Dynamic Objects (DO), and Environment (EN) — each on a binary pass/fail basis. The aggregated scores feed directly into the **Scenario Quality (SQ)** and **Framework Accuracy (FA)** metrics.
 
-<div align="center">
-   <video src="https://github.com/TUM-AVS/Chat2scenic/raw/main/assets/demo_evaluation_gui.mp4" poster="https://github.com/TUM-AVS/Chat2scenic/raw/main/assets/demo_evaluation_gui_poster.png" controls muted loop playsinline width="80%"></video>
-</div>
+<p align="center">
+   <img src="assets/demo_evaluation_gui.gif" alt="Human evaluation GUI demo" width="80%" />
+</p>
 
 ## Qualitative Examples
 
