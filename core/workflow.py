@@ -7,7 +7,6 @@ import logging
 import time
 
 from .agents.Interpretor import Interpretor
-from .agents.component_assembler_agent import ComponentAssemblerAgent
 from .agents.component_generator_agent import ComponentGeneratorAgent
 from .agents.HeaderGenerator import HeaderGeneratorAgent
 from .agents.settings_detector_agent import SettingsDetectorAgent
@@ -43,8 +42,7 @@ class SearchWorkflow:
     def __init__(self, thread_id: str = "search_thread"):
         self.thread_id = thread_id
         self.interpretor = Interpretor()
-        # self.assembler_agent = ComponentAssemblerAgent()
-        self.generator_agent = ComponentGeneratorAgent() 
+        self.generator_agent = ComponentGeneratorAgent()
         self.header_generator = HeaderGeneratorAgent()
         self.settings_detector = SettingsDetectorAgent()
         self.regulation_query_agent = RegulationQueryAgent()
