@@ -1,4 +1,4 @@
-<h1 align="center">Chat2Scenic: An Iterative RAG-Based Framework for Scenario Generation in Autonomous Driving</h1>
+<h1 align="center">[IROS 2026] Chat2Scenic: An Iterative RAG-Based Framework for Scenario Generation in Autonomous Driving</h1>
 
 <p align="center">
    <a href="https://arxiv.org/abs/2607.14387">📝 arXiv</a>
