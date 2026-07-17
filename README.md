@@ -1,6 +1,8 @@
 <h1 align="center">Chat2Scenic: An Iterative RAG-Based Framework for Scenario Generation in Autonomous Driving</h1>
 
 <p align="center">
+   <a href="https://arxiv.org/abs/2607.14387">📝 arXiv</a>
+   &nbsp;•&nbsp;
    <a href="https://anonymous-research-paper.github.io/Chat2Scenic/">🌐 Homepage</a>
    &nbsp;•&nbsp;
    <a href="https://huggingface.co/datasets/chat2scenic/Chat2Scenic">🤗 Dataset</a>
@@ -9,6 +11,7 @@
 </p>
 
 <p align="center">
+   <a href="https://arxiv.org/abs/2607.14387"><img alt="arXiv" src="https://img.shields.io/badge/arXiv-2607.14387-b31b1b.svg"></a>
    <img alt="IROS 2026" src="https://img.shields.io/badge/IROS%202026-Accepted-success">
    <img alt="Python" src="https://img.shields.io/badge/Python-3.10-blue">
    <img alt="RAG" src="https://img.shields.io/badge/LangChain-RAG-purple">
