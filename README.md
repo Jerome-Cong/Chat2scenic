@@ -166,11 +166,10 @@ Chat2Scenic is released under the [Creative Commons Attribution-NonCommercial 4.
 If you find Chat2Scenic useful, please cite our paper:
 
 ```bibtex
-@inproceedings{chat2scenic2026,
-   title     = {Chat2Scenic: An Iterative RAG-Based Framework for Scenario Generation in Autonomous Driving},
-   author    = {Gao, Yuan and Miao, Wenting and Piccinini, Mattia and Wang, Haoyu and Song, Qunying and Betz, Johannes},
-   booktitle = {2026 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
-   year      = {2026},
-   organization = {IEEE}
+@article{gao2026chat2scenic,
+  title={Chat2Scenic: An Iterative RAG-Based Framework for Scenario Generation in Autonomous Driving},
+  author={Gao, Yuan and Miao, Wenting and Piccinini, Mattia and Wang, Haoyu and Song, Qunying and Betz, Johannes},
+  journal={arXiv preprint arXiv:2607.14387},
+  year={2026}
 }
 ```
