@@ -14,7 +14,3 @@ Vehicle A saw Vehicle B approaching in the next lane. A determined that B was fa
 Vehicle A and vehicle B were both heading in the same direction on a multi-lane road in different lanes. B attempted to turn from the curb lane across the path of A onto a side street. Driver A struck illegally turning B in the driver's side.
 A northbound vehicle, A, was waiting to make a left turn. The light changed and the northbound vehicle began to turn left. A southbound driver, B, accelerated hard, hoping to make the light and struck Vehicle A.
 Vehicle A was waiting to turn left. Driver A observed B approaching from the opposite direction, but thought there was enough time to complete the left turn. Driver A misjudged vehicle B’s distance and was struck by Vehicle B.
-
-
-
-
