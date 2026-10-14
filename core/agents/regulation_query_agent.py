@@ -2,7 +2,7 @@ import logging
 import re
 from typing import Dict, List, Optional
 
-from langchain.chat_models import init_chat_model
+from core.llm_runtime import create_chat_model
 from langchain_core.messages import HumanMessage
 from langchain_core.prompts import ChatPromptTemplate
 
@@ -53,18 +53,7 @@ class RegulationQueryAgent:
         self.model_name = settings.LLM_MODEL_NAME
         self.model_provider = settings.LLM_PROVIDER
         
-        if self.model_provider == "ollama":
-            self.llm = init_chat_model(
-                self.model_name, 
-                model_provider=self.model_provider, 
-                base_url=settings.OLLAMA_URL
-            )
-        else:
-            self.llm = init_chat_model(
-                self.model_name, 
-                model_provider=self.model_provider,
-                api_key=settings.GOOGLE_API_KEY if self.model_provider == "google_genai" else settings.OPENAI_API_KEY
-            )
+        self.llm = create_chat_model(self.model_name, self.model_provider)
         
         self.detection_prompt = ChatPromptTemplate.from_template(QUERY_DETECTION_PROMPT)
         self.response_prompt = ChatPromptTemplate.from_template(REGULATION_RESPONSE_PROMPT)

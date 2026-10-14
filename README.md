@@ -173,3 +173,7 @@ If you find Chat2Scenic useful, please cite our paper:
   year={2026}
 }
 ```
+
+## Local public benchmark profile
+
+See [BENCHMARK_RUNTIME.md](BENCHMARK_RUNTIME.md) for the isolated runtime, declared model differences and retained failure boundaries.

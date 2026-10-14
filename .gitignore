@@ -19,3 +19,6 @@ Benchmark*/
 evaluation*/
 data/
 .vscode/
+# Isolated benchmarking dependencies and artifacts
+runtimes/
+.benchmark-runtime/

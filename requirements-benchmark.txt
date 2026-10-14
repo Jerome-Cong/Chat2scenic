@@ -1,0 +1,16 @@
+# Generation-only runtime matching the public 0.3-series source imports.
+pydantic-settings>=2,<3
+openai>=1.104,<2
+langchain>=0.3.27,<0.4
+langchain-community>=0.3.27,<0.4
+langchain-core>=0.3.76,<0.4
+langchain-google-genai>=2.1.12,<3
+langchain-huggingface>=0.3.1,<0.4
+langchain-milvus>=0.2.1,<0.3
+langchain-ollama>=0.3.8,<0.4
+langchain-openai>=0.3.33,<0.4
+langgraph>=0.6.7,<0.7
+pymilvus>=2.6,<2.7
+sentence-transformers==5.1.1
+transformers>=4.41,<5
+# Install CPU PyTorch separately for retrieval; CARLA/Scenic use a separate env.

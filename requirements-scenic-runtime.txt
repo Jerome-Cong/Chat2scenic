@@ -1,0 +1,4 @@
+# Native Scenic 3.0 runtime; Shapely 2.1 changed the private points() ABI used by 3.0.
+scenic==3.0.0
+carla==0.9.15
+Shapely>=2.0,<2.1

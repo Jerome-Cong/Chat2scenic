@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from langchain_core.messages import HumanMessage
 from langchain_core.prompts import ChatPromptTemplate
-from langchain.chat_models import init_chat_model
+from core.llm_runtime import create_chat_model
 from typing import Any, Dict
 from typing import Optional
 import re
@@ -18,19 +18,11 @@ class BaseAgent(ABC):
     def __init__(self, prompt_template: str, model_name: str = None, model_provider: str = None, use_rag: bool = False, think_mode: bool = False):
         self.prompt_template = ChatPromptTemplate.from_template(prompt_template)
         self.prompt_template_str = prompt_template  # Store original template string for logging
-        self.model_name = model_name or settings.LLM_MODEL_NAME
-        self.model_provider = model_provider or settings.LLM_PROVIDER
+        self.model_name = settings.LLM_MODEL_NAME if settings.LLM_PROFILE_OVERRIDE else (model_name or settings.LLM_MODEL_NAME)
+        self.model_provider = settings.LLM_PROVIDER if settings.LLM_PROFILE_OVERRIDE else (model_provider or settings.LLM_PROVIDER)
         
-        if self.model_provider == "ollama":
-            self.llm = init_chat_model(
-                self.model_name, 
-                model_provider=self.model_provider, 
-                base_url=settings.OLLAMA_URL
-            )
-        else:
-            self.llm = init_chat_model(self.model_name, model_provider=self.model_provider, include_thoughts=think_mode,
-             api_key=settings.GOOGLE_API_KEY if self.model_provider == "google_genai" else settings.OPENAI_API_KEY)
-    
+        self.llm = create_chat_model(self.model_name, self.model_provider, think_mode)
+
         self.vector_store = MilvusClient() if use_rag else None
         self.last_formatted_prompt: Optional[str] = None  # Store last formatted prompt for logging
         self.last_response: Optional[str] = None  # Store last response for logging

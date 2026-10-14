@@ -41,13 +41,19 @@ class Settings(BaseSettings):
     
     #  LLM Response Parameters
     LLM_PROVIDER: str = "google_genai"  # "ollama" or "openai" or "google_genai"
+    # Explicit opt-in for a shared benchmarking model profile.
+    LLM_PROFILE_OVERRIDE: bool = False
+    OPENAI_BASE_URL: str | None = None
+    LLM_TIMEOUT_SECONDS: float = 60.0
+    LLM_MAX_RETRIES: int = 2
     LLM_TEMPERATURE: float = 0.0  # Controls creativity/randomness (0.0-1.0)
     LLM_MAX_TOKENS: int = 4096    # Maximum response length
     LLM_TOP_P: float = 0.9        # Nucleus sampling parameter
     LLM_TOP_K: int = 40           # Top-k sampling parameter
 
     class Config:
-        env_file = "././.env"   
+        env_file = "././.env"
+        extra = "ignore"
 
 
 @lru_cache()
